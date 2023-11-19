@@ -1,38 +1,42 @@
 import Head from "next/head";
+import { subDays, subHours } from "date-fns";
 import { Box, Container, Unstable_Grid2 as Grid } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { Stack, Typography } from "@mui/material";
-import { OverviewTotalQueues } from "src/sections/overview/overview-total-queues";
-import { OverviewTotalExchanges } from "src/sections/overview/overview-total-exchanges";
-import { OverviewTotalConnections } from "src/sections/overview/overview-total-connections";
 import { OverviewTotalAckMessages } from "src/sections/overview/overview-total-messagesAck";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import config from "src/config";
+import { QueueName } from "src/sections/overview/queue_name";
+import { QueueConsumers } from "src/sections/overview/queue_consumers";
+import { QueueMemory } from "src/sections/overview/queue_memory";
+import { QueueState } from "src/sections/overview/queue_state";
+import { QueueExchange } from "src/sections/overview/queue_exchange";
 
+QueueState;
 const now = new Date();
 
 const Page = () => {
-	const [overview, setOverview] = useState([]);
+	const [queueData, setQueueData] = useState([]);
 	useEffect(() => {
-		const fetchOverview = async () => {
+		const fetchQueueData = async () => {
 			try {
 				const response = await axios.get(
-					config.base_url + "/rabbit/overview"
+					config.base_url + "/rabbit/queues/usuarios-queue"
 				);
 				const data = await response.data;
-				setOverview(data);
+				setQueueData(data);
 			} catch (error) {
 				console.log(error);
 			}
 		};
-		fetchOverview();
+		fetchQueueData();
 	}, []);
-
+	console.log(queueData);
 	return (
 		<>
 			<Head>
-				<title>Overview</title>
+				<title>Usuarios</title>
 			</Head>
 			<Box
 				component="main"
@@ -41,7 +45,7 @@ const Page = () => {
 					py: 8,
 				}}
 			>
-				<Container maxWidth="lg">
+				<Container maxWidth="xl">
 					<Box
 						component="main"
 						sx={{
@@ -51,43 +55,25 @@ const Page = () => {
 					>
 						<Container maxWidth="lg">
 							<Stack spacing={3}>
-								<Typography variant="h4">Overview</Typography>
+								<Typography variant="h4">Usuarios</Typography>
 							</Stack>
 						</Container>
 					</Box>
 					<Grid container spacing={5}>
 						<Grid xs={12} sm={6} lg={5}>
-							<OverviewTotalQueues
-								difference={12}
-								positive
-								sx={{ height: "100%" }}
+							<QueueName
 								value={
-									overview.total_queues
-										? overview.total_queues
-										: 0
-								}
-							/>
-						</Grid>
-						<Grid xs={12} sm={6} lg={5}>
-							<OverviewTotalExchanges
-								difference={12}
-								positive
-								sx={{ height: "100%" }}
-								value={
-									overview.total_exchanges
-										? overview.total_exchanges
+									queueData.name
+										? String(queueData.name)
 										: "0"
 								}
 							/>
 						</Grid>
 						<Grid xs={12} sm={6} lg={5}>
-							<OverviewTotalConnections
-								difference={12}
-								positive
-								sx={{ height: "100%" }}
+							<QueueConsumers
 								value={
-									overview.total_connections
-										? overview.total_connections
+									queueData.consumers
+										? String(queueData.consumers)
 										: "0"
 								}
 							/>
@@ -98,11 +84,32 @@ const Page = () => {
 								positive
 								sx={{ height: "100%" }}
 								value={
-									overview.total_ack_messages
-										? String(overview.total_ack_messages)
+									queueData.ack_messages
+										? String(queueData.ack_messages)
 										: "0"
 								}
 							/>
+						</Grid>
+						<Grid xs={12} sm={6} lg={5}>
+							<QueueMemory
+								value={
+									queueData.memory
+										? String(queueData.memory)
+										: "0"
+								}
+							/>
+						</Grid>
+						<Grid xs={12} sm={6} lg={5}>
+							<QueueState
+								value={
+									queueData.state
+										? String(queueData.state)
+										: "0"
+								}
+							/>
+						</Grid>
+						<Grid xs={12} sm={6} lg={5}>
+							<QueueExchange value={"core-exchange"} />
 						</Grid>
 					</Grid>
 				</Container>
