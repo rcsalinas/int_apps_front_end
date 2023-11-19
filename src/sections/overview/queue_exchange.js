@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import ForwardIcon from "@heroicons/react/24/solid/ForwardIcon";
+import ForwardIcon from "@heroicons/react/24/solid/ArrowTrendingUpIcon";
 import {
 	Avatar,
 	Card,

@@ -56,7 +56,7 @@ const Page = () => {
 						</Container>
 					</Box>
 					<Grid container spacing={5}>
-						<Grid xs={12} sm={6} lg={5}>
+						<Grid xs={12} sm={6} lg={6}>
 							<OverviewTotalQueues
 								difference={12}
 								positive
@@ -68,7 +68,7 @@ const Page = () => {
 								}
 							/>
 						</Grid>
-						<Grid xs={12} sm={6} lg={5}>
+						<Grid xs={12} sm={6} lg={6}>
 							<OverviewTotalExchanges
 								difference={12}
 								positive
@@ -80,7 +80,7 @@ const Page = () => {
 								}
 							/>
 						</Grid>
-						<Grid xs={12} sm={6} lg={5}>
+						<Grid xs={12} sm={6} lg={6}>
 							<OverviewTotalConnections
 								difference={12}
 								positive
@@ -92,7 +92,7 @@ const Page = () => {
 								}
 							/>
 						</Grid>
-						<Grid xs={12} sm={6} lg={5}>
+						<Grid xs={12} sm={6} lg={6}>
 							<OverviewTotalAckMessages
 								difference={12}
 								positive

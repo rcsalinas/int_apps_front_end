@@ -16,7 +16,7 @@ import { QueueConsumers } from "src/sections/overview/queue_consumers";
 import { QueueMemory } from "src/sections/overview/queue_memory";
 import { QueueState } from "src/sections/overview/queue_state";
 import { QueueExchange } from "src/sections/overview/queue_exchange";
-
+import MessagesSection from "src/sections/messages-section";
 const Page = () => {
 	const [queueData, setQueueData] = useState([]);
 	useEffect(() => {
@@ -62,7 +62,7 @@ const Page = () => {
 						</Container>
 					</Box>
 					<Grid container spacing={5}>
-						<Grid xs={12} sm={6} lg={5}>
+						<Grid xs={12} sm={6} lg={6}>
 							<QueueName
 								value={
 									queueData.name
@@ -71,7 +71,7 @@ const Page = () => {
 								}
 							/>
 						</Grid>
-						<Grid xs={12} sm={6} lg={5}>
+						<Grid xs={12} sm={6} lg={6}>
 							<QueueConsumers
 								value={
 									queueData.consumers
@@ -80,7 +80,7 @@ const Page = () => {
 								}
 							/>
 						</Grid>
-						<Grid xs={12} sm={6} lg={5}>
+						<Grid xs={12} sm={6} lg={6}>
 							<OverviewTotalAckMessages
 								difference={12}
 								positive
@@ -92,7 +92,7 @@ const Page = () => {
 								}
 							/>
 						</Grid>
-						<Grid xs={12} sm={6} lg={5}>
+						<Grid xs={12} sm={6} lg={6}>
 							<QueueMemory
 								value={
 									queueData.memory
@@ -101,7 +101,7 @@ const Page = () => {
 								}
 							/>
 						</Grid>
-						<Grid xs={12} sm={6} lg={5}>
+						<Grid xs={12} sm={6} lg={6}>
 							<QueueState
 								value={
 									queueData.state
@@ -110,8 +110,14 @@ const Page = () => {
 								}
 							/>
 						</Grid>
-						<Grid xs={12} sm={6} lg={5}>
+						<Grid xs={12} sm={6} lg={6}>
 							<QueueExchange value={"core-exchange"} />
+						</Grid>
+						<Grid xs={12} sm={6} lg={12}>
+							<MessagesSection
+								sx={{ height: "100%" }}
+								queueName="core-contable"
+							/>
 						</Grid>
 					</Grid>
 				</Container>
