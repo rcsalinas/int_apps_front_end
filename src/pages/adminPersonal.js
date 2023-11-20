@@ -19,30 +19,39 @@ import { QueueMemory } from "src/sections/overview/queue_memory";
 import { QueueState } from "src/sections/overview/queue_state";
 import { QueueExchange } from "src/sections/overview/queue_exchange";
 import MessagesSection from "src/sections/messages-section";
+import Button from "@mui/material/Button";
+import ArrowPathIcon from "@heroicons/react/24/solid/ArrowPathIcon";
+import { SvgIcon } from "@mui/material";
+import Overlay from "src/components/overlay";
 
 const now = new Date();
 
 const Page = () => {
 	const [queueData, setQueueData] = useState([]);
+	const [sync, setSync] = useState(false);
+	const [loading, setLoading] = useState(false);
 	useEffect(() => {
 		const fetchQueueData = async () => {
 			try {
+				setLoading(true);
 				const response = await axios.get(
 					config.base_url + "/rabbit/queues/admin-personal-queue"
 				);
 				const data = await response.data;
 				setQueueData(data);
+				setLoading(false);
 			} catch (error) {
 				console.log(error);
 			}
 		};
 		fetchQueueData();
-	}, []);
+	}, [sync]);
 	return (
 		<>
 			<Head>
 				<title>Administracion de Personal</title>
 			</Head>
+			{loading && <Overlay />}
 			<Box
 				component="main"
 				sx={{
@@ -58,12 +67,35 @@ const Page = () => {
 							marginBottom: 4,
 						}}
 					>
-						<Container maxWidth="lg">
+						<Container
+							maxWidth="lg"
+							sx={{
+								display: "flex",
+								justifyContent: "space-between",
+								alignItems: "center",
+								flexWrap: "wrap",
+							}}
+						>
 							<Stack spacing={3}>
 								<Typography variant="h4">
 									Administracion de Personal
 								</Typography>
 							</Stack>
+							<Button
+								color="primary"
+								size="small"
+								variant="outlined"
+								startIcon={
+									<SvgIcon fontSize="small">
+										<ArrowPathIcon />
+									</SvgIcon>
+								}
+								onClick={() => {
+									setSync(!sync);
+								}}
+							>
+								Sync
+							</Button>
 						</Container>
 					</Box>
 					<Grid container spacing={5}>

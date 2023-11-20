@@ -9,31 +9,39 @@ import { OverviewTotalAckMessages } from "src/sections/overview/overview-total-m
 import axios from "axios";
 import { useEffect, useState } from "react";
 import config from "src/config";
-
-const now = new Date();
+import Button from "@mui/material/Button";
+import ArrowPathIcon from "@heroicons/react/24/solid/ArrowPathIcon";
+import { SvgIcon } from "@mui/material";
+import Overlay from "src/components/overlay";
 
 const Page = () => {
 	const [overview, setOverview] = useState([]);
+	const [sync, setSync] = useState(false);
+	const [loading, setLoading] = useState(false);
 	useEffect(() => {
 		const fetchOverview = async () => {
 			try {
+				setLoading(true);
 				const response = await axios.get(
 					config.base_url + "/rabbit/overview"
 				);
 				const data = await response.data;
 				setOverview(data);
+				setLoading(false);
 			} catch (error) {
+				setLoading(false);
 				console.log(error);
 			}
 		};
 		fetchOverview();
-	}, []);
+	}, [sync]);
 
 	return (
 		<>
 			<Head>
 				<title>Overview</title>
 			</Head>
+			{loading && <Overlay />}
 			<Box
 				component="main"
 				sx={{
@@ -49,10 +57,32 @@ const Page = () => {
 							marginBottom: 4,
 						}}
 					>
-						<Container maxWidth="lg">
+						<Container
+							maxWidth="lg"
+							sx={{
+								display: "flex",
+								justifyContent: "space-between",
+								alignItems: "center",
+							}}
+						>
 							<Stack spacing={3}>
 								<Typography variant="h4">Overview</Typography>
 							</Stack>
+							<Button
+								color="primary"
+								size="small"
+								variant="outlined"
+								startIcon={
+									<SvgIcon fontSize="small">
+										<ArrowPathIcon />
+									</SvgIcon>
+								}
+								onClick={() => {
+									setSync(!sync);
+								}}
+							>
+								Sync
+							</Button>
 						</Container>
 					</Box>
 					<Grid container spacing={5}>
