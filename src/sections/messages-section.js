@@ -40,7 +40,8 @@ const MessagesSection = ({ queueName, sx }) => {
 						"&sender=" +
 						queueName +
 						"&created_at[lt]=" +
-						nextDay
+						nextDay +
+						"&sort=created_at&limit=4000"
 				);
 				const data = await response.data.data;
 
