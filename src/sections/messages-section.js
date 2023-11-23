@@ -75,7 +75,7 @@ const MessagesSection = ({ queueName, sx }) => {
 						Sync
 					</Button>
 				}
-				title="Sales"
+				title="Messages"
 			/>
 			<CardContent>
 				<Stack
